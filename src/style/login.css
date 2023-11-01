@@ -1,0 +1,175 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Pour centrer verticalement sur toute la hauteur de la fenêtre */
+  }
+  
+  .card {
+    width: 35%;
+    height: 80%;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-container > div:first-child {
+    background-image: url("../assets/eni.jpg");
+    background-size: cover;
+    border-radius: 10px 0px 0px 10px;
+  }
+  
+  .card-content {
+    color: white;
+    font-family: "Roboto";
+    padding-left: 10%;
+    padding-right: 10%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    background-color: #113c4ac2;
+    border-radius: 10px 0px 0px 10px;
+    height: 100%;
+  }
+  
+  .card-text h1{
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
+  }
+  .card-title,
+  .card-content-login span {
+    justify-self: end;
+    font-size: 14px;
+  }
+  
+  .card-content-login {
+    height: 100%;
+    padding-left: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+  
+  .logo{
+    margin-top: 1em;
+  }
+  .card-content-login .card-title-login,
+  .username,
+  .password,
+  .submit,
+  .pwd {
+    justify-self: center;
+  }
+  
+  .card-title-login {
+    font-family: "Roboto Slab";
+    color: #3f7b70;
+  }
+  .username,
+  .password {
+    position: relative;
+    line-height: 14px;
+    margin: 0 10px;
+    display: inline-block;
+  }
+  
+  .username label,
+  .password label {
+    color: #3f7b70;
+    font-size: 13px;
+    font-family: "Roboto Slab";
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    top: 14px;
+    padding: 0 2px;
+    background-color: #f0f0f0;
+    transition: transform 0.2s ease;
+  }
+  
+  .label_user {
+    display: flex; /* Utilisation de flexbox pour aligner les éléments */
+    align-items: center; /* Centre les éléments verticalement */
+  }
+  
+  .label_user img {
+    margin-right: 10px; /* Marge à droite pour séparer l'image du texte (ajustez selon vos besoins) */
+  }
+  
+  .username input,
+  .password input {
+    width: 20em;
+    font-size: 13px;
+    background-color: #f0f0f0;
+    outline: none;
+    padding: 10px 20px;
+    position: relative;
+    height: 30px;
+    &:invalid + label {
+      transform: translateY(0);
+    }
+  
+    &:focus {
+      & + label {
+        transform: translateY(-20px);
+      }
+    }
+  }
+  
+  .username input.filled,
+  .password input.filled {
+    & + label {
+      transform: translateY(-20px);
+    }
+  }
+  
+  .pwd {
+    width: 20em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+  
+  .pwd div {
+    font-size: 13px;
+  }
+  
+  .pwd > div:nth-child(2) {
+    text-align: end;
+  }
+  
+  .login-page button {
+    width: 20em;
+    height: 54px;
+    font-size: 16px;
+    background-color: #113c4a;
+    color: white;
+    font-family: "Roboto Slab";
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-page button:hover {
+    background-color: #113c4ac2;
+  }
+  @media (max-width: 768px) {
+    .card-container {
+      flex-direction: column; /* Empiler les éléments verticalement sur les écrans plus petits */
+      height: auto; /* Permettre à l'élément de s'ajuster en fonction du contenu sur les petits écrans */
+    }
+  
+    .card {
+      width: 100%;
+      height: auto;
+    }
+  }
+  

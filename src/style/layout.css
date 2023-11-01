@@ -1,0 +1,76 @@
+.layout {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr;
+    grid-template-rows: 0.1fr 1fr 0.1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 100vh; /* Assure que le corps de la page prend toute la hauteur de la fenêtre */
+    font-family: "Roboto";
+  }
+  
+  header {
+    grid-area: 1 / 1 / 2 / 3;
+    /* border: 1px solid black; */
+  }
+  header span {
+    margin: 2px 2px 2px 20px;
+  }
+  
+  aside {
+    grid-area: 2 / 1 / 3 / 2;
+    /* border: 1px solid red; */
+    background-color: #113c4a;
+    position: relative;
+  }
+  
+  aside > div:first-child {
+    border-top: 1px solid white;
+    font-family: "Roboto Slab";
+    color: white;
+    width: 100%;
+    height: 18%;
+    position: absolute;
+    bottom: 0;
+  }
+  
+  aside div > span:first-child {
+    width: 100%;
+    position: absolute;
+    bottom: 45%;
+    text-align: center;
+  }
+  
+  section {
+    grid-area: 2 / 2 / 3 / 3;
+    height: 100%;
+  }
+  
+  footer {
+    grid-area: 3 / 1 / 4 / 3;
+    /* border: 1px solid orange; */
+    font-size: 12px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.2fr repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 100px;
+    grid-row-gap: 0px;
+  }
+  
+  footer > div:first-child {
+    grid-area: 1 / 1 / 2 / 2;
+    /* border : 1px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  footer > div:nth-child(2) {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+  footer > div:nth-child(3) {
+    grid-area: 1 / 3 / 2 / 4;
+  }
+  footer > div:nth-child(4) {
+    grid-area: 1 / 4 / 2 / 5;
+  }
+  
