@@ -1,0 +1,92 @@
+.table-fiche-prof {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.table-fiche-prof input {
+  height: 2.5em;
+  width: 50%;
+  background-color: white;
+  border: 1px solid #eae7e7;
+}
+
+.table-fiche-prof > div:first-child {
+  margin: 1em 2em 0 2em;
+}
+
+.table-fiche-prof table {
+  flex-grow: 1;
+  margin-top: 2em;
+  margin: 2em;
+  border-collapse: collapse;
+}
+
+.table-fiche-prof table thead,
+.table-fiche-prof table tr {
+  height: 4em;
+}
+
+.table-fiche-prof table th,
+.table-fiche-prof table td {
+  padding-left: 1em;
+}
+.table-fiche-prof table thead {
+  color: white;
+  background-color: #155e63;
+  border-radius: 10px;
+}
+
+.table-fiche-prof table th {
+  text-align: left;
+}
+
+.table-fiche-prof tr:nth-child(2n) {
+  background-color: #a2c9bb9e;
+}
+
+.checkbox {
+  position: relative;
+  overflow: hidden;
+}
+
+.checkbox__input {
+  position: absolute;
+  visibility: hidden;
+  top: -100px;
+  left: -100px;
+}
+
+.checkbox__inner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #626262;
+}
+
+.input-present:checked + .present {
+  border-color: #52c6c4;
+  background-color: #52c6c4;
+  background-image: url("../assets/present.png");
+  background-size: cover;
+  /* background-size: 14px 10px; */
+}
+
+.input-absent:checked + .absent {
+  border-color: rgb(218, 48, 48);
+  background-color: rgb(218, 48, 48);
+  background-image: url("../assets/absent.png");
+  background-size: cover;
+  /* background-size: 14px 10px; */
+}
+
+.present {
+  background-image: url("../assets/pres.png");
+  background-size: cover;
+}
+
+.absent {
+  background-image: url("../assets/abs.png");
+  background-size: cover;
+}
