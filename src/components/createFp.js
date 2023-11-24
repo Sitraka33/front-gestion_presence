@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./layout";
+import Axios from "axios";
 import "../style/createFp.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { data, event } from "jquery";
 
 function CreateFp() {
+  const [dataMatiere, setDataMatiere] = useState([]);
+  const [matiere, setMatiere] = useState([{}]);
+  const [dataMention, setDataMention] = useState([]);
+  const codeens = "ENI00387";
+  var newMatiere_1;
   const [formValue, setFormValue] = useState({
     classe: "",
     mention: "",
@@ -11,8 +18,28 @@ function CreateFp() {
     heure: "",
     matiere: "",
   });
+  const classe = [
+    { nom: "L1" },
+    { nom: "L2" },
+    { nom: "L3" },
+    { nom: "M1" },
+    { nom: "M2" },
+  ];
 
+  const mention_1 = [{ nom: "PRO" }, { nom: "IG" }];
+  const mention_2 = [{ nom: "IG" }, { nom: "GB" }, { nom: "SR" }];
   const navigate = useNavigate();
+
+  const getMatiere = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/matiere/" + codeens
+      );
+      setDataMatiere(response.data);
+    } catch (error) {
+      console.log("Error : " + error.message);
+    }
+  };
 
   function handleInputChange(event) {
     event.preventDefault();
@@ -21,14 +48,42 @@ function CreateFp() {
     setFormValue({ ...formValue, [name]: value });
   }
 
+  function handleClasseChange(event) {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setFormValue({ ...formValue, [name]: value });
+
+    if (value === "L1") setDataMention(mention_1);
+    else setDataMention(mention_2);
+  }
+
+  const setMatiereChange = (event) => {
+    const newMatiere = dataMatiere.filter(
+      (item) => item.classe === formValue.classe + " " + formValue.mention
+    );
+
+    setMatiere((matiere) => newMatiere);
+  }
+
+  const handleMentionChange = async (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setFormValue({ ...formValue, [name]: value });
+  };
+
   function handleSubmit(event) {
     event.preventDefault();
 
-    navigate('/fiche', {
-      state : formValue
-    })
+    navigate("/fiche", {
+      state: formValue,
+    });
     console.log(formValue);
   }
+
+  useEffect(() => {
+    getMatiere();
+  }, []);
+
   return (
     <Layout>
       <div className="section-createFp">
@@ -44,12 +99,16 @@ function CreateFp() {
                   <select
                     name="classe"
                     value={formValue.classe}
-                    onChange={handleInputChange}
+                    onChange={handleClasseChange}
                     id=""
+                    required
                   >
                     <option value="">Choisir classe</option>
-                    <option value="M1">M1</option>
-                    <option value="M2">M2</option>
+                    {classe.map((ligne, index) => (
+                      <option key={index} value={ligne.nom}>
+                        {ligne.nom}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -57,13 +116,16 @@ function CreateFp() {
                   <select
                     name="mention"
                     value={formValue.mention}
-                    onChange={handleInputChange}
+                    onChange={handleMentionChange}
                     id=""
+                    required
                   >
                     <option value="">Choisir mention</option>
-                    <option value="GB">GB</option>
-                    <option value="SR">SR</option>
-                    <option value="IG">IG</option>
+                    {dataMention.map((ligne, index) => (
+                      <option key={index} value={ligne.nom}>
+                        {ligne.nom}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -74,6 +136,7 @@ function CreateFp() {
                   name="date"
                   value={formValue.date}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               <div>
@@ -83,6 +146,7 @@ function CreateFp() {
                   name="heure"
                   value={formValue.time}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               <div>
@@ -91,11 +155,16 @@ function CreateFp() {
                   name="matiere"
                   value={formValue.matiere}
                   onChange={handleInputChange}
+                  onClick={setMatiereChange}
                   id=""
+                  required
                 >
                   <option value="">Choisir matière</option>
-                  <option value="Java">Java</option>
-                  <option value="Python">Python</option>
+                  {matiere.map((ligne, index) => (
+                    <option key={index} value={ligne.matiere}>
+                      {ligne.matiere}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

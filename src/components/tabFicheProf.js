@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../style/tabFicheProf.css";
-import { data } from "jquery";
+import "../style/tab.css";
 
-function TabFicheProf({ data }) {
+function TabFicheProf({ data, onUpdateData }) {
   const [recherche, setRecherche] = useState("");
-  const [checkedPresents, setCheckedPresent] = useState([]);
-  const [checkedAbsents, setCheckedAbsent] = useState({});
-  const [donnes, setDonnee] = useState(data);
+  const [donnes, setDonnee] = useState([]);
 
   const updateStatusByMatricule = (matricule, newStatus) => {
     const newData = donnes.map((item) => {
@@ -17,7 +14,7 @@ function TabFicheProf({ data }) {
     });
 
     setDonnee(newData);
-  };
+  };  
 
   const searchStatusByMatricule = (matricule) => {
     return donnes.find((ligne) => ligne.matricule === matricule);
@@ -52,8 +49,22 @@ function TabFicheProf({ data }) {
       ligne.prenom.toLowerCase().includes(rechercheLowerCase)
     );
   });
+
+  useEffect(() => {
+    onUpdateData(donnes);
+  }, [donnes, onUpdateData]);
+
+  useEffect(() => {
+    setDonnee(data.map((item) => ({
+      matricule: item.im,
+      nom: item.nometd,
+      prenom: item.prenomsetd,
+      statut: 0,
+    })))
+  }, [data]);
+
   return (
-    <div className="table-fiche-prof">
+    <div className="tab">
       <div>
         <input
           type="text"
@@ -79,25 +90,25 @@ function TabFicheProf({ data }) {
               <td>{ligne.nom}</td>
               <td>{ligne.prenom}</td>
               <td>
-                <label class="checkbox">
+                <label className="checkbox">
                   <input
                     type="checkbox"
-                    class="checkbox__input input-present"
+                    className="checkbox__input input-present"
                     checked={ligne.statut === 1}
                     onChange={() => handlePresentChange(ligne.matricule)}
                   />
-                  <span class="checkbox__inner present"></span>
+                  <span className="checkbox__inner present"></span>
                 </label>
               </td>
               <td>
-                <label class="checkbox">
+                <label className="checkbox">
                   <input
                     type="checkbox"
-                    class="checkbox__input input-absent"
+                    className="checkbox__input input-absent"
                     checked={ligne.statut === 2}
                     onChange={() => handleAbsentChange(ligne.matricule)}
                   />
-                  <span class="checkbox__inner absent"></span>
+                  <span className="checkbox__inner absent"></span>
                 </label>
               </td>
             </tr>
