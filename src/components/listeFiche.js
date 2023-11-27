@@ -1,32 +1,133 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./layout";
+import Axios from "axios";
+import Loading from "./loading";
 import "../style/listeFiche.css";
 import TabListeFiche from "./tabListeFiche";
 
 function ListeFiche() {
-  const prof = [
-    { nom: "Josué" },
-    { nom: "William" },
-    { nom: "Andry Bertin" },
-    { nom: "Arisena" },
-  ];
+  const [recherche, setRecherche] = useState({
+    date: "",
+    heure: "",
+    prof: "",
+    matiere: "",
+  });
 
-  const matiere = [
-    { nom: "java" },
-    { nom: "python" },
-    { nom: "IA" },
-    { nom: "Anglais" },
-  ];
+  const compte = localStorage.getItem('poste');
+  const codeens = localStorage.getItem('matricule');
+  const [matiere, setMatiere] = useState([])
+  const [donnes, setDonnes] = useState([]);
+  const [dataFilter, setDataFilter] = useState(donnes);
+  const [loading, setLoading] = useState(true);
+  const [prof, setProf] = useState([]);
 
-  const data = [
-    {date : "25/10/2023", horaire : "09:00", prof:"Mr Josué", matiere: "Python", classe: "L3"},
-    {date : "26/10/2023", horaire : "07:30", prof:"Mr Josué", matiere: "IA", classe: "M1"},
-    {date : "27/10/2023", horaire : "10:30", prof:"Mr Josué", matiere: "Java", classe: "M2"},
-    {date : "28/10/2023", horaire : "09:00", prof:"Mr Josué", matiere: "IA", classe: "L3"},
-    {date : "29/10/2023", horaire : "07:30", prof:"Mr Josué", matiere: "Anglais", classe: "L3"},
-    {date : "30/10/2023", horaire : "09:00", prof:"Mr Josué", matiere: "IA", classe: "L3"},
-    
-  ]
+  const getFiches = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/fiche"
+      );
+
+      setDonnes(response.data);
+    } catch (error) {
+      console.log("Error : " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFichesByProf = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/ficheByEnseignant/"+codeens
+      );
+
+      setDonnes(response.data);
+    } catch (error) {
+      console.log("Error : " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const getMatiere = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/matiere/" + codeens
+      );
+      setMatiere(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.log("Error matiere : " + error.message);
+    }
+  };
+
+  const getProfs = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/enseignant"
+      );
+
+      setProf(response.data);
+    } catch (error) {
+      console.log("Error : " + error.message + codeens);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  function handleInputChange(event) {
+    event.preventDefault();
+    const { name, value } = event.target;
+
+    setRecherche({ ...recherche, [name]: value });
+  }
+
+  function handleSearch(event) {
+    event.preventDefault();
+
+    const filter = donnes.filter((ligne) => {
+      const dateRecherche = recherche.date.toLowerCase();
+      var date = dateRecherche;
+      if (dateRecherche !== "") {
+        const splitDate = dateRecherche.split("-");
+        date = (
+          splitDate[2] +
+          "-" +
+          splitDate[1] +
+          "-" +
+          splitDate[0]
+        ).toLowerCase();
+      }
+      const heure = recherche.heure.toLowerCase();
+      const prof = recherche.prof.toLowerCase();
+      const matiere = recherche.matiere.toLowerCase();
+      return (
+        (date === "" || ligne.dateabs.toLowerCase().includes(date)) &&
+        (heure === "" || ligne.heure.toString().includes(heure)) &&
+        (prof === "" || ligne.nomens.toLowerCase().includes(prof)) &&
+        (matiere === "" || ligne.matiere.toLowerCase().includes(matiere))
+      );
+    });
+
+    setDataFilter(filter);
+  }
+
+  useEffect(() => {
+    (compte==="prof") ? getFichesByProf() : getFiches();
+    getProfs();
+    getMatiere();
+    setDataFilter(donnes);
+  }, []);
+
+  useEffect(() => {
+    // getFiches()
+    setDataFilter(donnes);
+  }, [donnes]);
+
+  if (loading) {
+    return <Loading type="fiches" />;
+  }
+
   return (
     <Layout>
       <div className="section-liste">
@@ -35,28 +136,56 @@ function ListeFiche() {
             <div className="filtre-liste">
               <div className="filtre-liste-input">
                 <span>Filtrer par :</span>
-                <input type="date" name="date" value="" placeholder="Date" />
-                <input type="time" name="heure" value="" placeholder="Heure" />
-                <select>
-                  <option value="">Enseignant</option>
-                  {prof.map((ligne, index) => (
-                    <option value={ligne.nom}>{ligne.nom}</option>
-                  ))}
-                </select>
-                <select>
+                <input
+                  type="date"
+                  name="date"
+                  value={recherche.date}
+                  onChange={handleInputChange}
+                  placeholder="Date"
+                />
+                <input
+                  type="time"
+                  name="heure"
+                  value={recherche.heure}
+                  onChange={handleInputChange}
+                  placeholder="Heure"
+                />
+
+                {compte !== "prof" && (
+                  <select
+                    name="prof"
+                    value={recherche.prof}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Enseignant</option>
+                    {prof.map((ligne, index) => (
+                      <option key={index} value={ligne.nomens}>
+                        {ligne.nomens}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                <select
+                  name="matiere"
+                  value={recherche.matiere}
+                  onChange={handleInputChange}
+                >
                   <option value="">Matière</option>
                   {matiere.map((ligne, index) => (
-                    <option value={ligne.nom}>{ligne.nom}</option>
+                    <option key={index} value={ligne.matiere}>
+                      {ligne.matiere}
+                    </option>
                   ))}
                 </select>
               </div>
               <div className="filtre-liste-btn">
-                    <button>Filtrer</button>
+                <button onClick={handleSearch}>Filtrer</button>
               </div>
             </div>
           </div>
           <div className="card-liste">
-            <TabListeFiche data={data}/>
+            <TabListeFiche data={dataFilter} />
           </div>
         </div>
       </div>

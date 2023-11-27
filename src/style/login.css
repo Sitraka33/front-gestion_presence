@@ -148,7 +148,7 @@
     text-align: end;
   }
   
-  .login-page button {
+  .login-page .bouton {
     width: 20em;
     height: 54px;
     font-size: 16px;
@@ -158,7 +158,7 @@
     transition: background-color 0.3s ease;
   }
   
-  .login-page button:hover {
+  .login-page .bouton:hover {
     background-color: #113c4ac2;
   }
   @media (max-width: 768px) {

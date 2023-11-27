@@ -73,12 +73,17 @@
 }
 
 .filtre-liste-btn button {
+  cursor: pointer;
   width: 173px;
   height: 45px;
   color: #ffff;
   background-color: #3aa6b9;
   /* border-radius: 20%; */
   border: none;
+}
+
+.filtre-liste-btn:hover {
+  opacity: 0.75;
 }
 
 .card-container-liste > div:nth-child(2) {
@@ -90,6 +95,7 @@
 
 .action {
   color : #76B39D;
+  cursor: pointer;
   background-color: #ffff;
   width: 113px;
   height: 40.68px;

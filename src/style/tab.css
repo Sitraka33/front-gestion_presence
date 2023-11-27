@@ -81,7 +81,15 @@
   /* background-size: 14px 10px; */
 }
 
-.present {
+.input-justification:checked + .justification {
+  border-color: #3AA6B9;
+  background-color: #3AA6B9;
+  background-image: url("../assets/check.png");
+  background-size: cover;
+  /* background-size: 14px 10px; */
+}
+
+.present, .justification {
   background-image: url("../assets/pres.png");
   background-size: cover;
 }
@@ -89,4 +97,17 @@
 .absent {
   background-image: url("../assets/abs.png");
   background-size: cover;
+}
+
+.td-just{
+  width: 15em;
+  text-align: center;
+}
+
+.td-point{
+  text-align: center;
+}
+
+.center{
+  text-align: center !important;
 }

@@ -3,20 +3,20 @@ import Layout from "./layout";
 import Axios from "axios";
 import "../style/createFp.css";
 import { useNavigate } from "react-router-dom";
-import { data, event } from "jquery";
 
 function CreateFp() {
   const [dataMatiere, setDataMatiere] = useState([]);
   const [matiere, setMatiere] = useState([{}]);
   const [dataMention, setDataMention] = useState([]);
-  const codeens = "ENI00387";
-  var newMatiere_1;
+  const codeens = localStorage.getItem('matricule');
   const [formValue, setFormValue] = useState({
     classe: "",
     mention: "",
     date: "",
     heure: "",
     matiere: "",
+    purpose: "create", 
+    codehoraire : undefined
   });
   const classe = [
     { nom: "L1" },
@@ -37,7 +37,7 @@ function CreateFp() {
       );
       setDataMatiere(response.data);
     } catch (error) {
-      console.log("Error : " + error.message);
+      console.log("Error matiere : " + error.message);
     }
   };
 

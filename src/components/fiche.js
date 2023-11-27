@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./layout";
+import Loading from "./loading";
 import "../style/fiche.css";
-import "../style/loading.css";
 import Axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import TabFicheProf from "./tabFicheProf";
 
 function Fiche() {
@@ -11,20 +13,31 @@ function Fiche() {
   const navigate = useNavigate();
   const [etudiant, setEtudiant] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [wait, setWait] = useState(false)
   const [dataCreateFiche, setDataCreateFiche] = useState({});
+  const [absent, setAbsent] = useState([]);
   var dataAbs;
-  const { classe, mention, date, heure, matiere } = location.state;
-  const codeens = "ENI00387";
+  var absentsShow;
+  const { classe, mention, date, heure, matiere, purpose, codehoraire } =
+    location.state;
+  const codeens = localStorage.getItem('matricule');
   const [data, setData] = useState([]);
+  const compte = localStorage.getItem('poste');
 
   const postFiche = async () => {
     try {
-      console.log(dataCreateFiche)
+      const splitDate = dataCreateFiche.dateabs.split("-");
+      var date;
+      if (purpose === "create") {
+        date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+      } else {
+        date = dataCreateFiche.dateabs;
+      }
       const response = await Axios.post(
         "https://eni-service-gestionpresence.onrender.com/fiche",
         {
           classe: dataCreateFiche.classe,
-          dateabs: dataCreateFiche.dateabs,
+          dateabs: date,
           heure: dataCreateFiche.heure,
           matiere: dataCreateFiche.matiere,
           codeens: dataCreateFiche.codeens,
@@ -36,15 +49,39 @@ function Fiche() {
     }
   };
 
-  const postAbs = async () => {
+  const deleteFiche = async (code) => {
     try {
-      console.log({codemat : dataAbs.codemat, codehoraire : dataAbs.codehoraire, im : "2020"})
+      const response = await Axios.delete(
+        "https://eni-service-gestionpresence.onrender.com/fiche/"+code
+
+      );
+
+      console.log(response.data)
+    } catch (error) {
+      console.log("Error fiche : " + error.name);
+    }
+  };
+  const postAbs = async (body) => {
+    try {
       const response = await Axios.post(
         "https://eni-service-gestionpresence.onrender.com/absence",
-        { codemat : dataAbs.codemat, codehoraire : dataAbs.codehoraire, im : "2020" }
+        body
       );
       console.log(response.data);
-      navigate("/listeFiche")
+      navigate("/listeFiche");
+    } catch (error) {
+      console.log("Error ABS : " + error.message);
+    }
+  };
+
+  const updateAbs = async (body) => {
+    try {
+      const response = await Axios.put(
+        "https://eni-service-gestionpresence.onrender.com/absence",
+        body
+      );
+      console.log(response.data);
+      navigate("/listeFiche");
     } catch (error) {
       console.log("Error ABS : " + error.message);
     }
@@ -54,19 +91,47 @@ function Fiche() {
     try {
       const response = await Axios.post(
         "https://eni-service-gestionpresence.onrender.com/etudiant",
-        { classe: dataCreateFiche.classe }
+        { classe: classe + " " + mention }
       );
 
       setEtudiant(response.data);
-      console.log(response.status, " ", response.data);
-      // etudiant = response.data
     } catch (error) {
       console.log("Error : " + error.message);
     } finally {
-      setLoading(false); // Indiquer que le chargement est terminé, que ce soit réussi ou non
+      setLoading(false);
+    }
+  };
+  const getAbsents = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/absence/" +
+          codehoraire
+      );
+
+      setAbsent(response.data);
+    } catch (error) {
+      console.log("Error : " + error.message);
     }
   };
 
+  const getAbsentsShow = async (code) => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/absence/" +
+          code
+      );
+
+      absentsShow = response.data;
+    } catch (error) {
+      console.log("Error : " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (purpose === "show") {
+      getAbsents();
+    }
+  }, []);
   useEffect(() => {
     setDataCreateFiche({
       classe: classe + " " + mention,
@@ -80,50 +145,117 @@ function Fiche() {
 
   const handleUpdateData = (newData) => {
     setData(newData);
-    // data = newData
   };
 
-  function traiterData(data) {
-    return data.filter((item) => item.statut === 2);
+  function traiterData(data, compte) {
+    if (compte === "prof" && purpose === "create")
+      return data.filter((item) => item.statut === 2 || item.statut === 3);
+    else if (compte === "prof" && purpose === "show")
+      return data.filter((item) => item.statut === 2 || item.statut === 3);
+    else return data.filter((item) => item.statut === 3 || item.statut === 2);
   }
 
   const handleSubmit = async (event) => {
-    try {
-      event.preventDefault();
+    setWait(true)
+    setLoading(true)
+    if (data.some((ligne) => ligne.statut === 0)) {
+      toast.error("Pointage incomplet", { position: toast.POSITION.TOP_RIGHT });
+    } else {
+      if (compte === "prof" && purpose === "create") {
+        try {
+          event.preventDefault();
+          await postFiche();
+          const body = traiterData(data, compte).map((item) => ({
+            codemat: dataAbs.codemat,
+            codehoraire: dataAbs.codehoraire,
+            im: item.matricule,
+          }));
+          await postAbs(body);
+        } catch (error) {
+          console.log(
+            "Erreur lors de la soumission du formulaire : " + error.message
+          );
+        }
+      } else if (compte === "prof" && purpose === "show") {
+        console.log(codehoraire);
+        try {
+          event.preventDefault();
 
-      console.log(traiterData(data));
-      await postFiche();
-      await postAbs();
-    } catch (error) {
-      // Gérer les erreurs ici
-      console.log(
-        "Erreur lors de la soumission du formulaire : " + error.message
-      );
+          const matriculesJust = traiterData(data, compte)
+          .filter((item) => item.statut === 3)
+          .map((item) => item.matricule);
+
+          await deleteFiche(codehoraire);
+
+          await postFiche();
+
+          const body = traiterData(data, compte).map((item) => ({
+            codemat: dataAbs.codemat,
+            codehoraire: dataAbs.codehoraire,
+            im: item.matricule,
+          }));
+          await postAbs(body);
+
+          await getAbsentsShow(dataAbs.codehoraire);
+          const bodyJust = absentsShow
+          .filter((item) => matriculesJust.includes(item.im))
+          .map((item) => ({
+            codeabs: item.codeabs,
+            motifabs: "ok",
+          }));
+
+          await updateAbs(bodyJust)
+        } catch (error) {
+          console.log(
+            "Erreur lors de la soumission du formulaire : " + error.message
+          );
+        }
+
+
+        
+      } else {
+        const matriculesJust = traiterData(data, compte)
+          .filter((item) => item.statut === 3)
+          .map((item) => item.matricule);
+
+        const matriculesNonJust = traiterData(data, compte)
+          .filter((item) => item.statut === 2)
+          .map((item) => item.matricule);
+
+        const bodyJust = absent
+          .filter((item) => matriculesJust.includes(item.im))
+          .map((item) => ({
+            codeabs: item.codeabs,
+            motifabs: "ok",
+          }));
+
+        const bodyNonJust = absent
+          .filter((item) => matriculesNonJust.includes(item.im))
+          .map((item) => ({
+            codeabs: item.codeabs,
+            motifabs: null,
+          }));
+
+        const body = bodyJust.concat(bodyNonJust);
+
+        try {
+          await updateAbs(body);
+        } catch (error) {
+          console.log(
+            "Erreur lors de la soumission du formulaire : " + error.message
+          );
+        }
+      }
     }
   };
 
   if (loading) {
-    return (
-      <div className="container-loading">
-        <div className="loading">
-          <div className="loading-icon">
-            <div className="lds-ring">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-          <div className="loading-text">
-            <p>Chargement de la liste des élèves....</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <Loading type="etudiants" wait={wait} />;
   }
 
   return (
     <Layout>
+      <ToastContainer />
       <div className="section-fiche">
         <div className="card-container-fiche">
           <div className="card-fiche card-header-fiche">
@@ -147,7 +279,14 @@ function Fiche() {
             </div>
           </div>
           <div className="card-fiche">
-            <TabFicheProf data={etudiant} onUpdateData={handleUpdateData} />
+            <TabFicheProf
+              data={etudiant}
+              onUpdateData={handleUpdateData}
+              purpose={purpose}
+              codehoraire={codehoraire}
+              compte={compte}
+              absent={absent}
+            />
             <div className="card-footer-fiche">
               <button onClick={handleSubmit}>Valider</button>
             </div>
