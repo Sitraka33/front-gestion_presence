@@ -1,0 +1,102 @@
+
+.recherche-container{
+    display: flex;
+    align-items: center;
+    border:1px solid #ADC4CE;
+    border-radius: 25px;
+    width: 22rem;
+
+}
+.recherche-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0.8%;
+}
+.recherche-input input{
+    border:none;
+    width: 18rem;
+}
+.imageRecherche-container{
+    width: 2rem;
+    background-color: #EEE;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.imgRecherche-wrapper{
+    margin: 8px;
+}
+.tab-user table{
+    width:100%;
+    height:100%;
+    border-collapse: collapse;
+    overflow:hidden;
+    font-family: "Roboto";
+    margin-top: 1%;
+}
+
+.tab-user table thead{
+    height: 3rem;
+    background-color: #155E63;
+    color:#ffffff;
+    font-size: 14px;
+}
+
+.tab-user table th, tr,td{
+    padding: 10px;
+    text-align:left;
+    height: 2rem;
+}
+.tab-user{
+    max-height: 350px; /* Définissez la hauteur maximale du conteneur pour activer la barre de défilement */
+    overflow-y: auto;
+    max-width: 100%; /* Définissez la hauteur maximale du conteneur pour activer la barre de défilement */
+    overflow-x: auto;
+}
+.btn-wrapper{
+}
+.btn-update{
+    background-image:url('../assets/pen.png');
+    background-size: 100% 100%; 
+    width: 35%;
+    height: 85%;
+    background-color: white;
+    border-radius: 50%;
+    border: none;
+    
+}
+.btn-update:hover{
+    transform: translateX(-2px);
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+.btn-update:active{
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+.btn-delete{
+    background-image:url('../assets/delete.png');
+    background-size: 100% 100%; 
+    width: 35%;
+    height: 85%;
+    background-color: white;
+    border-radius: 50%;
+    border: none;
+}
+.btn-delete:hover{
+    transform: translateX(-2px);
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+.btn-delete:active{
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+
+
+
+

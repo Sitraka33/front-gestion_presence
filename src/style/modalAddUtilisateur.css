@@ -1,0 +1,102 @@
+.modalAddUser-background{
+    position:fixed;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(81, 90, 100, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modalAddUser-container{
+    width: 25rem;
+    height: 25rem;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.modalAddUser-header{
+    font-family: "Roboto Slab";
+    color:#113C4A;
+    font-size:19px;
+    width:85%;
+    display: flex;
+    flex-direction: row;
+}
+.title-container{
+    width: 100%;
+}
+.title-container p {
+    text-align: center;
+}
+.modalAddUser-body{
+    width: 85%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+}
+.modalAddUser-body label {
+    height: 2rem;
+    font-size: 14px;
+    font-family: "Roboto";
+    display: flex;
+    align-items: center;
+}
+.modalAddUser-body input{
+    margin: 0% 0 1% 0%;
+    height: 2.5rem;
+    width: 100%;
+    background-color: #EAE7E7;
+    border: none;
+    border-radius: 5px;
+}
+.modalAddUser-body select{
+    height: 2.8em;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #eae7e7;
+    background-color: #EAE7E7;
+    border-radius: 5px;
+}
+.modalAddUser-footer{
+    width: 100%;
+    height: 2rem;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+.btnAdd-wrapper{
+    width: 10rem;
+    height: 2rem;
+}
+.btnAdd{
+    width: 100%;
+    height: 100%;
+    border:none;
+    color:#ffff;
+    background-color: #76B39D;
+    border-radius: 2px;
+    font-size: 14px;
+    font-family: "Roboto Slab";
+    font-weight:bold ;
+}
+
+.btnAdd:hover{
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    background-color: #22A699;
+    font-size: 15px;
+    transform: translateY(-5px);
+}
+
+.btnAdd:active{
+    box-shadow: none;
+    transform: translateY(-1px);
+}
