@@ -1,0 +1,77 @@
+.modal_background{
+    position:fixed;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(81, 90, 100, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_container{
+    width:25%;
+    height: 75%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.modal_body{
+    width:75%;
+    height: 75%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.image{
+    width: 100%;
+    margin-top: 15%;
+}
+.modal_message{
+    font-family: "Roboto";
+    font-size: 15px;
+    color:#265A5C;
+    text-align: center;
+}
+
+.loading{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading .line-box{
+    padding: 2px;
+    width: 85%;
+    height: 10px;
+    border: 2px solid #265A5C;
+    border-radius: 10px;
+}
+
+.loading .line-box .line{
+    height: 10px;
+    border-radius: 10px;
+    background: #113C4A;
+    animation: loading 4s forwards cubic-bezier(0,0,0,0);
+}
+
+@keyframes loading {
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 100%;
+    }
+}
