@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./layout";
+import "../style/createFp.css";
+import wait from "../assets/wait.jpg";
+import succes from "../assets/success.png";
 import Axios from "axios";
 import "../style/createFp.css";
 import { useNavigate } from "react-router-dom";
+import ModalProgressBar from "./modal/modalProgressBar";
 
 function CreateFp() {
   const [dataMatiere, setDataMatiere] = useState([]);
@@ -29,6 +33,17 @@ function CreateFp() {
   const mention_1 = [{ nom: "PRO" }, { nom: "IG" }];
   const mention_2 = [{ nom: "IG" }, { nom: "GB" }, { nom: "SR" }];
   const navigate = useNavigate();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [downloadComplete, setDownloadComplete] = useState(false);
+
+  const simulateDownload = () => {
+    // Utilisez setTimeout pour simuler un téléchargement réussi après 7 secondes
+    setTimeout(() => {
+      setDownloadComplete(true);
+      console.log("downloadComplete:" + downloadComplete);
+    }, 6000);
+  };
 
   const getMatiere = async () => {
     try {
@@ -65,6 +80,10 @@ function CreateFp() {
     setMatiere((matiere) => newMatiere);
   }
 
+  useEffect(() => {
+    getMatiere();
+  }, []);
+
   const handleMentionChange = async (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -73,16 +92,19 @@ function CreateFp() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    setOpenModal(true);
+    simulateDownload();
+  }
 
-    navigate("/fiche", {
-      state: formValue,
-    });
+  function closeModal() {
+    setOpenModal(false);
+    navigate('/fiche', {
+      state : formValue
+    })
     console.log(formValue);
   }
 
-  useEffect(() => {
-    getMatiere();
-  }, []);
+
 
   return (
     <Layout>
@@ -178,6 +200,51 @@ function CreateFp() {
             </div>
           </div>
         </form>
+        
+        {downloadComplete ? (
+          <ModalProgressBar openModal={openModal} closeModal={closeModal}>
+            {
+              <div className="modal_body">
+                <div className="modal_img">
+                  <img src={succes} className="image" alt=""></img>
+                </div>
+                <div>
+                  <h5 className="modal_message">
+                    TELECHARGEMENT REUSSI
+                  </h5>
+                </div>
+                <div className="modal_btn">
+                  <button className="btn_continuer">Continuer</button>
+                </div>
+              </div>
+            }
+          </ModalProgressBar>
+        ) : (
+          <ModalProgressBar
+            openModal={openModal}
+            closeModal={closeModal}
+            downloadComplete={downloadComplete}
+          >
+            {
+              <div className="modal_body">
+                <div className="modal_img">
+                  <img src={wait} className="image" alt=""/>
+                </div>
+                <div>
+                  <h5 className="modal_message">
+                    FICHIER EN COURS DE TELECHARGEMENT
+                  </h5>
+                </div>
+                <div className="loading">
+                  <div className="line-box">
+                    <div className="line"></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </ModalProgressBar>
+        )}
+
       </div>
     </Layout>
   );

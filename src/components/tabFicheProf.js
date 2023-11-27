@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
 import "../style/tab.css";
 
 function TabFicheProf({ data, onUpdateData, purpose, codehoraire, compte, absent }) {
@@ -133,7 +132,7 @@ function TabFicheProf({ data, onUpdateData, purpose, codehoraire, compte, absent
                     className="checkbox__input input-present"
                     checked={ligne.statut === 1}
                     onChange={() => handlePresentChange(ligne.matricule)}
-                    disabled={ligne.statut === 3}
+                    disabled={ligne.statut === 3 || compte !== "prof"}
                   />
                   <span className="checkbox__inner present"></span>
                 </label>
@@ -145,6 +144,7 @@ function TabFicheProf({ data, onUpdateData, purpose, codehoraire, compte, absent
                     className="checkbox__input input-absent"
                     checked={ligne.statut === 2 || ligne.statut === 3}
                     onChange={() => handleAbsentChange(ligne.matricule)}
+                    disabled={compte !== "prof"}
                   />
                   <span className="checkbox__inner absent"></span>
                 </label>

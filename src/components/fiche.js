@@ -2,20 +2,23 @@ import React, { useEffect, useState } from "react";
 import Layout from "./layout";
 import Loading from "./loading";
 import "../style/fiche.css";
+import men_success from "../assets/men_success.png";
+import pointage_success from "../assets/pointage_reussi.png";
 import Axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TabFicheProf from "./tabFicheProf";
+import ModalSuccess from "./modal/modalSuccess";
 
 function Fiche() {
   const location = useLocation();
   const navigate = useNavigate();
   const [etudiant, setEtudiant] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [wait, setWait] = useState(false)
   const [dataCreateFiche, setDataCreateFiche] = useState({});
   const [absent, setAbsent] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
   var dataAbs;
   var absentsShow;
   const { classe, mention, date, heure, matiere, purpose, codehoraire } =
@@ -68,7 +71,7 @@ function Fiche() {
         body
       );
       console.log(response.data);
-      navigate("/listeFiche");
+      // navigate("/listeFiche");
     } catch (error) {
       console.log("Error ABS : " + error.message);
     }
@@ -81,7 +84,7 @@ function Fiche() {
         body
       );
       console.log(response.data);
-      navigate("/listeFiche");
+      // navigate("/listeFiche");
     } catch (error) {
       console.log("Error ABS : " + error.message);
     }
@@ -155,12 +158,16 @@ function Fiche() {
     else return data.filter((item) => item.statut === 3 || item.statut === 2);
   }
 
+  function closeModal() {
+    setOpenModal(false);
+    navigate("/listeFiche");
+  }
+
   const handleSubmit = async (event) => {
-    setWait(true)
-    setLoading(true)
     if (data.some((ligne) => ligne.statut === 0)) {
       toast.error("Pointage incomplet", { position: toast.POSITION.TOP_RIGHT });
     } else {
+      setOpenModal(true);
       if (compte === "prof" && purpose === "create") {
         try {
           event.preventDefault();
@@ -250,7 +257,7 @@ function Fiche() {
   };
 
   if (loading) {
-    return <Loading type="etudiants" wait={wait} />;
+    return <Loading type="etudiants" />;
   }
 
   return (
@@ -292,6 +299,27 @@ function Fiche() {
             </div>
           </div>
         </div>
+        <ModalSuccess openModal={openModal} closeModal={closeModal}>
+          <div className="modalSuccess_body">
+            <div className="modalSuccess_img">
+              <img src={men_success} className="img img-default" alt="Default"></img>
+              <img src={pointage_success} className="img img-hover" alt="Hover" />
+            </div>
+            <div className="modalSuccess_message">
+              <h4>Pointage réussi!</h4>
+            </div>
+            <div >
+              <p className="message">
+              Les présences des étudiants ont été enregistrées avec succès. Vous
+              pouvez maintenant consulter le rapport de présence ou effectuer
+              d'autres actions nécessaires.
+            </p>
+            </div>
+            <div >
+              <button className="btnSuccess_container" onClick={closeModal}>Continuer</button>
+            </div>
+          </div>
+        </ModalSuccess>
       </div>
     </Layout>
   );
