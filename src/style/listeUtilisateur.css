@@ -1,56 +1,62 @@
-.section-listeUtilisateur{
-    background-color: #f5f7f8;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.section-listeUtilisateur {
+  background-color: #f5f7f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
-.card-container-user{
-    height: 90%;
-    width: 95%;
-    background-color: #ffffff;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.card-container-user {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  /* border: 1px solid red; */
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  min-height: 90%;
 }
-.card-content-header{
-    width:98%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 1%;
+.card-content-header {
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+  margin-left: 1%;
 }
-.card-content-body{
-    width:98%;
-    height: 23rem;
+.card-content-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 98%;
+  margin-left: 1%;
 }
-.card-tab-user{
-    height:100%
+.card-tab-user {
+  height: 100%;
 }
-.card-title-user p{
-    font-size:24px;
-    font-family: "Roboto Slab";
-    font-style: bold;
-    color:#113C4A;
-    margin: 0%;
+.card-title-user p {
+  font-size: 24px;
+  font-family: "Roboto Slab";
+  font-style: bold;
+  color: #113c4a;
+  margin: 0%;
 }
-.card-addBtn-user{
-    display: flex;
-    justify-content: flex-end;
+.card-addBtn-user {
+  display: flex;
+  justify-content: flex-end;
 }
-.btn-add-user{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width:35px;
-    height:35px;
-    background-color: #ffffff;
-    border:none;
-    margin:0 0 1% 0;
+.btn-add-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background-color: #ffffff;
+  border: none;
+  margin: 0 0 1% 0;
 }
-.img-add{
-    width: 100%;
-    height: 100%;
+.img-add {
+  width: 100%;
+  height: 100%;
 }

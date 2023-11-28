@@ -14,7 +14,7 @@ function Loading({type, wait}) {
             </div>
           </div>
           <div className="loading-text">
-            { (wait === true) ? <p>Traitement des modifications....</p> : <p>Chargement de la liste des {type}....</p>}
+            { (type === "login") ? <p>Recuperation des informations du compte....</p> : <p>Chargement de la liste des {type}....</p>}
           </div>
         </div>
       </div>

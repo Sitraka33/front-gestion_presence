@@ -55,7 +55,7 @@
    color : #FFFFFF;
    display: flex;
    justify-content: center;
-   align-items: center;
+   /* align-items: center; */
   }
 
   .navbar ul{
@@ -128,4 +128,12 @@
     background-color: #007bff;
     color: #fff;
     border-radius: 5px;
+  }
+
+  .layout li img{
+    margin-right: 1em;
+  }
+
+  .layout ul{
+    margin-left : -4em;
   }

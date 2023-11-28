@@ -183,14 +183,14 @@ function TabUtilisateur() {
           </div>
           <div className="imageRecherche-container">
             <div className="imgRecherche-wrapper">
-              <img src={rechercheImg} className="img-add"></img>
+              <img src={rechercheImg} className="img-add" alt></img>
             </div>
           </div>
         </div>
       </div>
       <table>
         <thead>
-          <tr>
+        <tr>
             <th>Matricule</th>
             <th>Nom</th>
             <th>Poste</th>

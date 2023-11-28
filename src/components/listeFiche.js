@@ -55,16 +55,25 @@ function ListeFiche() {
         "https://eni-service-gestionpresence.onrender.com/matiere/" + codeens
       );
       setMatiere(response.data);
-      console.log(response.data)
     } catch (error) {
       console.log("Error matiere : " + error.message);
     }
   };
 
+  const getMatieres = async () => {
+    try {
+      const response = await Axios.get(
+        "https://eni-service-gestionpresence.onrender.com/matiere"
+      );
+      setMatiere(response.data);
+    } catch (error) {
+      console.log("Error matiere : " + error.message);
+    }
+  };
   const getProfs = async () => {
     try {
       const response = await Axios.get(
-        "https://eni-service-gestionpresence.onrender.com/enseignant"
+        "https://eni-service-gestionpresence.onrender.com/enseignants"
       );
 
       setProf(response.data);
@@ -115,7 +124,7 @@ function ListeFiche() {
   useEffect(() => {
     (compte==="prof") ? getFichesByProf() : getFiches();
     getProfs();
-    getMatiere();
+    (compte==="prof") ? getMatiere() : getMatieres();
     setDataFilter(donnes);
   }, []);
 

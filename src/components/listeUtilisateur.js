@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import Layout from "./layout";
 import "../style/listeUtilisateur.css";
-import plus from "../assets/plus.png"
+import plus from "../assets/plus.png";
 import TabUtilisateur from "./tabUtilisateur";
 import ModalAddUtilisateur from "./modal/modalAddUtilisateur";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function ListeUtilisateur() {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
-  function handleOpenModal(){
+  function handleOpenModal() {
     setOpenModal(true);
   }
   function closeModal() {
@@ -27,22 +27,27 @@ function ListeUtilisateur() {
               <p>Mes Utilisateurs </p>
             </div>
             <div className="card-addBtn-user">
-              <button className="btn-add-user"> 
-                <img src={plus} className="img-add"onClick={handleOpenModal}></img>
+              <button className="btn-add-user">
+                <img
+                  src={plus}
+                  className="img-add"
+                  width="20px"
+                  height="20px"
+                  onClick={handleOpenModal}
+                ></img>
               </button>
             </div>
           </div>
           <div className="card-content-body">
-            <div className="card-tab-user">
-                <TabUtilisateur ></TabUtilisateur>
-            </div>
+            <TabUtilisateur></TabUtilisateur>
           </div>
         </div>
         {openModal && (
-          <ModalAddUtilisateur openModal={openModal} closeModal={closeModal} >
-          </ModalAddUtilisateur>
+          <ModalAddUtilisateur
+            openModal={openModal}
+            closeModal={closeModal}
+          ></ModalAddUtilisateur>
         )}
-        
       </div>
     </Layout>
   );

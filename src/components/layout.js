@@ -5,6 +5,8 @@ import Logout from "../assets/Logout.png";
 import logo from "../assets/Logo.jpg";
 import creer from "../assets/creer.png";
 import liste from "../assets/liste.png";
+import compteLogo from "../assets/compte.png";
+import users from "../assets/users.png";
 import { NavLink, useNavigate } from "react-router-dom";
 
 function Layout({ children }) {
@@ -16,8 +18,9 @@ function Layout({ children }) {
     localStorage.removeItem("matricule");
     localStorage.removeItem("create");
     localStorage.removeItem("login");
+    localStorage.removeItem("admin");
 
-    navigate('/');
+    navigate("/");
   };
   return (
     <div className="layout">
@@ -54,13 +57,35 @@ function Layout({ children }) {
                 )}
               </NavLink>
             </li>
+            <li>
+              {compte === "Admin" && (
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) => (isActive ? "active" : "none")}
+                >
+                  <img src={users} width="20px" height="20px" alt="" />
+                  Les utilisateurs
+                </NavLink>
+              )}
+            </li>
+            <li>
+              <NavLink
+                to="/compte"
+                className={({ isActive }) => (isActive ? "active" : "none")}
+              >
+                <img src={compteLogo} width="20px" height="20px" alt="" />
+                Mon compte
+              </NavLink>
+            </li>
           </ul>
         </div>
         <div className="logout">
           <div>
             <img src={Logout} width="20px" height="20px" alt="" />
             <span>
-              <button className="logout_btn " onClick={handleLogout}>Se deconnecter</button>
+              <button className="logout_btn " onClick={handleLogout}>
+                Se deconnecter
+              </button>
             </span>
           </div>
         </div>

@@ -31,6 +31,7 @@ function Login() {
     event.preventDefault();
 
     console.log(username + " " + password)
+    console.log(localStorage.getItem("admin"))
     try {
       const response = await Axios.post("https://eni-service-gestionpresence.onrender.com/authentification", {
         matricule : username, motdepasse : password
@@ -38,13 +39,20 @@ function Login() {
 
       localStorage.setItem("login", true);
       localStorage.setItem('matricule', response.data.matricule);
+      localStorage.setItem('nom', response.data.nom);
+      localStorage.setItem('prenom', response.data.prenoms);
       
       
       if(response.data.poste === "Enseignant"){
         localStorage.setItem("poste", "prof");
         localStorage.setItem("create", true)
         navigate('/createFp');
-      } else {
+      } else if (response.data.poste === "Admin"){
+        localStorage.setItem("poste", "Admin");
+        localStorage.setItem("admin", true)
+        navigate('/admin');
+      }
+        else {
         localStorage.setItem("poste", "sco");
         localStorage.setItem("create", false)
         navigate('/listeFiche');

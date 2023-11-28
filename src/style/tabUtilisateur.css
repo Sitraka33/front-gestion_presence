@@ -1,4 +1,3 @@
-
 .recherche-container{
     display: flex;
     align-items: center;
@@ -50,14 +49,6 @@
     padding: 10px;
     text-align:left;
     height: 2rem;
-}
-.tab-user{
-    max-height: 350px; /* Définissez la hauteur maximale du conteneur pour activer la barre de défilement */
-    overflow-y: auto;
-    max-width: 100%; /* Définissez la hauteur maximale du conteneur pour activer la barre de défilement */
-    overflow-x: auto;
-}
-.btn-wrapper{
 }
 .btn-update{
     background-image:url('../assets/pen.png');

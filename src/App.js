@@ -3,6 +3,8 @@ import Login from "./components/login";
 import CreateFp from "./components/createFp";
 import Fiche from "./components/fiche";
 import ListeFiche from "./components/listeFiche";
+import Compte from "./components/compte";
+import ListeUtilisateur from "./components/listeUtilisateur";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,7 +14,9 @@ import {
 
 function App() {
   const auth = localStorage.getItem("login");
+  const poste = localStorage.getItem("poste");
   const create = localStorage.getItem("create");
+  const admin = localStorage.getItem("admin");
   return (
     <div className="App">
       <Router>
@@ -21,7 +25,7 @@ function App() {
           <Route
             path="/createFp"
             element={
-              auth === "true" && create === "true" ? (
+              (auth  && create)  ? (
                 <CreateFp />
               ) : (
                 <Navigate to="/login" />
@@ -33,8 +37,22 @@ function App() {
             element={auth ? <Fiche /> : <Navigate to="/login" />}
           ></Route>
           <Route
+            path="/compte"
+            element={auth ? <Compte /> : <Navigate to="/login" />}
+          ></Route>
+          <Route
             path="/listeFiche"
             element={auth ? <ListeFiche /> : <Navigate to="/login" />}
+          ></Route>
+          <Route
+            path="/admin"
+            element={
+              (auth && admin) ? (
+                <ListeUtilisateur />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           ></Route>
           <Route path="/" element={<Navigate to="/login" />}></Route>
         </Routes>
