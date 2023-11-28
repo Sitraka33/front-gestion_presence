@@ -13,14 +13,15 @@ function Layout({ children }) {
   const compte = localStorage.getItem("poste");
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("poste");
     localStorage.removeItem("matricule");
     localStorage.removeItem("create");
     localStorage.removeItem("login");
     localStorage.removeItem("admin");
 
-    navigate("/");
+    const timestamp = Date.now();
+    navigate(`/?timestamp=${timestamp}`);
   };
   return (
     <div className="layout">

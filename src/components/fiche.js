@@ -19,6 +19,7 @@ function Fiche() {
   const [dataCreateFiche, setDataCreateFiche] = useState({});
   const [absent, setAbsent] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [wait, setWait] = useState([]);
   var dataAbs;
   var absentsShow;
   const { classe, mention, date, heure, matiere, purpose, codehoraire } =
@@ -72,6 +73,8 @@ function Fiche() {
       );
       console.log(response.data);
       // navigate("/listeFiche");
+      setLoading(false);
+      setOpenModal(true);
     } catch (error) {
       console.log("Error ABS : " + error.message);
     }
@@ -85,6 +88,9 @@ function Fiche() {
       );
       console.log(response.data);
       // navigate("/listeFiche");
+
+      setLoading(false);
+      setOpenModal(true);
     } catch (error) {
       console.log("Error ABS : " + error.message);
     }
@@ -167,7 +173,8 @@ function Fiche() {
     if (data.some((ligne) => ligne.statut === 0)) {
       toast.error("Pointage incomplet", { position: toast.POSITION.TOP_RIGHT });
     } else {
-      setOpenModal(true);
+      setWait(true)
+      setLoading(true)
       if (compte === "prof" && purpose === "create") {
         try {
           event.preventDefault();
@@ -257,7 +264,7 @@ function Fiche() {
   };
 
   if (loading) {
-    return <Loading type="etudiants" />;
+    return <Loading type="etudiants" wait={wait} />;
   }
 
   return (

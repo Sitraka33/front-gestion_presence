@@ -17,6 +17,10 @@ function App() {
   const poste = localStorage.getItem("poste");
   const create = localStorage.getItem("create");
   const admin = localStorage.getItem("admin");
+
+  const PrivateRoute = ({ element, condition, redirectPath }) => {
+    return condition ? element : <Navigate to={redirectPath} />;
+  };
   return (
     <div className="App">
       <Router>
@@ -24,13 +28,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route
             path="/createFp"
-            element={
-              (auth  && create)  ? (
-                <CreateFp />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={<PrivateRoute element={<CreateFp />} condition={auth && create} redirectPath="/createFp" />}
           ></Route>
           <Route
             path="/fiche"
@@ -46,13 +44,7 @@ function App() {
           ></Route>
           <Route
             path="/admin"
-            element={
-              (auth && admin) ? (
-                <ListeUtilisateur />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={<PrivateRoute element={<ListeUtilisateur />} condition={auth && admin} redirectPath="/admin" />}
           ></Route>
           <Route path="/" element={<Navigate to="/login" />}></Route>
         </Routes>

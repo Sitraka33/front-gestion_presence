@@ -30,34 +30,53 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(username + " " + password)
-    console.log(localStorage.getItem("admin"))
+    console.log(username + " " + password);
+    console.log(localStorage.getItem("admin"));
     try {
-      const response = await Axios.post("https://eni-service-gestionpresence.onrender.com/authentification", {
-        matricule : username, motdepasse : password
-      })
+      const response = await Axios.post(
+        "https://eni-service-gestionpresence.onrender.com/authentification",
+        {
+          matricule: username,
+          motdepasse: password,
+        }
+      );
 
       localStorage.setItem("login", true);
-      localStorage.setItem('matricule', response.data.matricule);
-      localStorage.setItem('nom', response.data.nom);
-      localStorage.setItem('prenom', response.data.prenoms);
-      
-      
-      if(response.data.poste === "Enseignant"){
-        localStorage.setItem("poste", "prof");
-        localStorage.setItem("create", true)
-        navigate('/createFp');
-      } else if (response.data.poste === "Admin"){
-        localStorage.setItem("poste", "Admin");
-        localStorage.setItem("admin", true)
-        navigate('/admin');
-      }
-        else {
-        localStorage.setItem("poste", "sco");
-        localStorage.setItem("create", false)
-        navigate('/listeFiche');
-      }
+      localStorage.setItem("matricule", response.data.matricule);
+      localStorage.setItem("nom", response.data.nom);
+      localStorage.setItem("prenom", response.data.prenoms);
 
+      console.log(response.data.poste);
+
+      if (response.data.poste === "Enseignant") {
+        localStorage.setItem("poste", "prof");
+        localStorage.setItem("create", true);
+        console.log(
+          "navigate('/createFp'); ",
+          localStorage.getItem("poste"),
+          localStorage.getItem("create")
+        );
+        navigate('/createFp');
+      } else if (response.data.poste === "Admin") {
+        localStorage.setItem("poste", "Admin");
+        localStorage.setItem("admin", true);
+
+        console.log(
+          "navigate('/admin'); ",
+          localStorage.getItem("poste"),
+          localStorage.getItem("create")
+        );
+        navigate("/admin");
+      } else {
+        localStorage.setItem("poste", "sco");
+        localStorage.setItem("create", false);
+        console.log(
+          "navigate('/listeFiche'); ",
+          localStorage.getItem("poste"),
+          localStorage.getItem("create")
+        );
+        navigate("/listeFiche");
+      }
     } catch (error) {
       toast.error(error.message, { position: toast.POSITION.TOP_RIGHT });
     }
@@ -65,7 +84,7 @@ function Login() {
 
   return (
     <div className="login-page">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="card-container">
         <div className="card">
           <div className="card-content">
