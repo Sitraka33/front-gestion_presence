@@ -4,7 +4,7 @@ import "../style/loading.css";
 function Loading({ type, wait }) {
   return (
     <div className="container-loading">
-      <div className="loading">
+      <div className="loading-container">
         <div className="loading-icon">
           <div className="lds-ring">
             <div></div>

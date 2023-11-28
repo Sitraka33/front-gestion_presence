@@ -22,7 +22,7 @@ function Fiche() {
   const [wait, setWait] = useState([]);
   var dataAbs;
   var absentsShow;
-  const { classe, mention, date, heure, matiere, purpose, codehoraire } =
+  const { classe, mention, date, heure, matiere, purpose, codehoraire, prof } =
     location.state;
   const codeens = localStorage.getItem('matricule');
   const [data, setData] = useState([]);
@@ -289,7 +289,7 @@ function Fiche() {
               <span className="label-fiche">Matiere :</span>
               <span className="text-fiche"> {dataCreateFiche.matiere} </span>
               <span className="label-fiche">Enseignant :</span>
-              <span className="text-fiche">Docteur Josué</span>
+              <span className="text-fiche">{prof}</span>
             </div>
           </div>
           <div className="card-fiche">

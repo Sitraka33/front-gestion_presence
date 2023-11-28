@@ -7,7 +7,7 @@
   background-color: grey;
 }
 
-.loading {
+.loading-container {
   height: 25em;
   width: 25em;
   display: flex;

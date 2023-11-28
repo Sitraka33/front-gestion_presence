@@ -13,6 +13,8 @@ function CreateFp() {
   const [matiere, setMatiere] = useState([{}]);
   const [dataMention, setDataMention] = useState([]);
   const codeens = localStorage.getItem('matricule');
+  const nomCompte =
+    localStorage.getItem("nom") + " " + localStorage.getItem("prenom");
   const [formValue, setFormValue] = useState({
     classe: "",
     mention: "",
@@ -20,7 +22,8 @@ function CreateFp() {
     heure: "",
     matiere: "",
     purpose: "create", 
-    codehoraire : undefined
+    codehoraire : undefined,
+    prof : nomCompte
   });
   const classe = [
     { nom: "L1" },
