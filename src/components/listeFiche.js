@@ -4,6 +4,7 @@ import Axios from "axios";
 import Loading from "./loading";
 import "../style/listeFiche.css";
 import TabListeFiche from "./tabListeFiche";
+import { useNavigate } from "react-router-dom";
 
 function ListeFiche() {
   const [recherche, setRecherche] = useState({
@@ -20,6 +21,7 @@ function ListeFiche() {
   const [dataFilter, setDataFilter] = useState(donnes);
   const [loading, setLoading] = useState(true);
   const [prof, setProf] = useState([]);
+  const navigate = useNavigate();
 
   const getFiches = async () => {
     try {
@@ -132,6 +134,17 @@ function ListeFiche() {
     // getFiches()
     setDataFilter(donnes);
   }, [donnes]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("login")) {
+      localStorage.removeItem("poste");
+      localStorage.removeItem("matricule");
+      localStorage.removeItem("create");
+      localStorage.removeItem("login");
+      localStorage.removeItem("admin");
+      navigate("/");
+    }
+  }, []);
 
   if (loading) {
     return <Loading type="fiches" />;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./layout";
 import Axios from "axios";
 import "../style/compte.css";
@@ -15,7 +15,7 @@ function Compte() {
   const nomCompte =
     localStorage.getItem("nom") + " " + localStorage.getItem("prenom");
   const matricule = localStorage.getItem("matricule");
-  const compte = localStorage.getItem("poste")
+  const compte = localStorage.getItem("poste");
 
   const authentifier = async () => {
     try {
@@ -70,6 +70,17 @@ function Compte() {
       }
     }
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("login")) {
+      localStorage.removeItem("poste");
+      localStorage.removeItem("matricule");
+      localStorage.removeItem("create");
+      localStorage.removeItem("login");
+      localStorage.removeItem("admin");
+      navigate("/");
+    }
+  }, []);
 
   return (
     <Layout>

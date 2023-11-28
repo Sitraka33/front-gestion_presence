@@ -78,7 +78,7 @@ function Login() {
         navigate("/listeFiche");
       }
     } catch (error) {
-      toast.error(error.message, { position: toast.POSITION.TOP_RIGHT });
+      toast.error("Matricule ou mot de passe incorrect", { position: toast.POSITION.TOP_RIGHT });
     }
   };
 

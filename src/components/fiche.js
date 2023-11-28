@@ -141,6 +141,18 @@ function Fiche() {
       getAbsents();
     }
   }, []);
+
+  useEffect(() => {
+    if (!localStorage.getItem("login")) {
+      localStorage.removeItem("poste");
+      localStorage.removeItem("matricule");
+      localStorage.removeItem("create");
+      localStorage.removeItem("login");
+      localStorage.removeItem("admin");
+      navigate("/");
+    }
+  }, []);
+
   useEffect(() => {
     setDataCreateFiche({
       classe: classe + " " + mention,

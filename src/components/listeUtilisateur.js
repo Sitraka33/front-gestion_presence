@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "./layout";
 import "../style/listeUtilisateur.css";
 import plus from "../assets/plus.png";
@@ -17,6 +17,19 @@ function ListeUtilisateur() {
     setOpenModal(false);
     //window.location.reload();
   }
+
+  useEffect(() => {
+    console.log(localStorage.getItem("poste"))
+    if (localStorage.getItem("poste") !== "Admin" || !localStorage.getItem("login")) {
+      console.log("ato")
+      localStorage.removeItem("poste");
+      localStorage.removeItem("matricule");
+      localStorage.removeItem("create");
+      localStorage.removeItem("login");
+      localStorage.removeItem("admin");
+      navigate("/");
+    }
+  }, []);
 
   return (
     <Layout>

@@ -13,6 +13,7 @@ function CreateFp() {
   const [matiere, setMatiere] = useState([{}]);
   const [dataMention, setDataMention] = useState([]);
   const codeens = localStorage.getItem('matricule');
+  const compte = localStorage.getItem("poste");
   const nomCompte =
     localStorage.getItem("nom") + " " + localStorage.getItem("prenom");
   const [formValue, setFormValue] = useState({
@@ -85,6 +86,18 @@ function CreateFp() {
 
   useEffect(() => {
     getMatiere();
+  }, []);
+
+
+  useEffect(() => {
+    if (localStorage.getItem("poste") !== "prof" || !localStorage.getItem("login")) {
+      localStorage.removeItem("poste");
+      localStorage.removeItem("matricule");
+      localStorage.removeItem("create");
+      localStorage.removeItem("login");
+      localStorage.removeItem("admin");
+      navigate("/");
+    }
   }, []);
 
   const handleMentionChange = async (event) => {

@@ -28,23 +28,23 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route
             path="/createFp"
-            element={<PrivateRoute element={<CreateFp />} condition={auth && create} redirectPath="/createFp" />}
+            element={<CreateFp />}
           ></Route>
           <Route
             path="/fiche"
-            element={auth ? <Fiche /> : <Navigate to="/login" />}
+            element={<Fiche />}
           ></Route>
           <Route
             path="/compte"
-            element={auth ? <Compte /> : <Navigate to="/login" />}
+            element={<Compte />}
           ></Route>
           <Route
             path="/listeFiche"
-            element={auth ? <ListeFiche /> : <Navigate to="/login" />}
+            element={<ListeFiche />}
           ></Route>
           <Route
             path="/admin"
-            element={<PrivateRoute element={<ListeUtilisateur />} condition={auth && admin} redirectPath="/admin" />}
+            element={<ListeUtilisateur />}
           ></Route>
           <Route path="/" element={<Navigate to="/login" />}></Route>
         </Routes>
