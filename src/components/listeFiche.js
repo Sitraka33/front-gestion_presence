@@ -23,6 +23,7 @@ function ListeFiche() {
   const [prof, setProf] = useState([]);
   const navigate = useNavigate();
 
+  //toutes les fiches
   const getFiches = async () => {
     try {
       const response = await Axios.get(
@@ -37,6 +38,7 @@ function ListeFiche() {
     }
   };
 
+  //toutes les fiches d'un prof
   const getFichesByProf = async () => {
     try {
       const response = await Axios.get(
@@ -51,6 +53,7 @@ function ListeFiche() {
     }
   };
   
+  //liste des matieres propre à un prof
   const getMatiere = async () => {
     try {
       const response = await Axios.get(
@@ -62,6 +65,7 @@ function ListeFiche() {
     }
   };
 
+  //liste de tous les matières disponibles
   const getMatieres = async () => {
     try {
       const response = await Axios.get(
@@ -72,6 +76,7 @@ function ListeFiche() {
       console.log("Error matiere : " + error.message);
     }
   };
+
   const getProfs = async () => {
     try {
       const response = await Axios.get(
@@ -125,13 +130,12 @@ function ListeFiche() {
 
   useEffect(() => {
     (compte==="prof") ? getFichesByProf() : getFiches();
-    getProfs();
+    getProfs(); 
     (compte==="prof") ? getMatiere() : getMatieres();
     setDataFilter(donnes);
   }, []);
 
   useEffect(() => {
-    // getFiches()
     setDataFilter(donnes);
   }, [donnes]);
 

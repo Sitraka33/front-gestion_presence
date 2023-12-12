@@ -13,7 +13,6 @@ function CreateFp() {
   const [matiere, setMatiere] = useState([{}]);
   const [dataMention, setDataMention] = useState([]);
   const codeens = localStorage.getItem('matricule');
-  const compte = localStorage.getItem("poste");
   const nomCompte =
     localStorage.getItem("nom") + " " + localStorage.getItem("prenom");
   const [formValue, setFormValue] = useState({
@@ -42,13 +41,14 @@ function CreateFp() {
   const [downloadComplete, setDownloadComplete] = useState(false);
 
   const simulateDownload = () => {
-    // Utilisez setTimeout pour simuler un téléchargement réussi après 7 secondes
     setTimeout(() => {
       setDownloadComplete(true);
       console.log("downloadComplete:" + downloadComplete);
     }, 6000);
   };
 
+
+  //liste des matieres de l'enseignant
   const getMatiere = async () => {
     try {
       const response = await Axios.get(
@@ -59,6 +59,16 @@ function CreateFp() {
       console.log("Error matiere : " + error.message);
     }
   };
+
+
+  //event qui assigne les matieres du prof % classe
+  const setMatiereChange = (event) => {
+    const newMatiere = dataMatiere.filter(
+      (item) => item.classe === formValue.classe + " " + formValue.mention
+    );
+
+    setMatiere((matiere) => newMatiere);
+  }
 
   function handleInputChange(event) {
     event.preventDefault();
@@ -74,14 +84,6 @@ function CreateFp() {
 
     if (value === "L1") setDataMention(mention_1);
     else setDataMention(mention_2);
-  }
-
-  const setMatiereChange = (event) => {
-    const newMatiere = dataMatiere.filter(
-      (item) => item.classe === formValue.classe + " " + formValue.mention
-    );
-
-    setMatiere((matiere) => newMatiere);
   }
 
   useEffect(() => {

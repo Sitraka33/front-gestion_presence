@@ -5,6 +5,7 @@ function TabFicheProf({ data, onUpdateData, purpose, codehoraire, compte, absent
   const [recherche, setRecherche] = useState("");
   const [donnes, setDonnee] = useState([]);
 
+  //gestion des status : statut 0 : sans pointage, 1 : present, 2 : abs, 3 : justifé
   const updateStatusByMatricule = (matricule, newStatus) => {
     const newData = donnes.map((item) => {
       if (item.matricule === matricule) {

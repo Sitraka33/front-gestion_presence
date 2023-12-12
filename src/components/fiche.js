@@ -110,6 +110,7 @@ function Fiche() {
       setLoading(false);
     }
   };
+
   const getAbsents = async () => {
     try {
       const response = await Axios.get(
@@ -137,6 +138,7 @@ function Fiche() {
   };
 
   useEffect(() => {
+    //purpose = show si la fiche est à afficher, sinon create si la fiche vient d'être créer 
     if (purpose === "show") {
       getAbsents();
     }
@@ -168,6 +170,7 @@ function Fiche() {
     setData(newData);
   };
 
+  //fonction qui permet de gérer le pointage (present 1, absent 2, absence justifié 3)
   function traiterData(data, compte) {
     if (compte === "prof" && purpose === "create")
       return data.filter((item) => item.statut === 2 || item.statut === 3);
@@ -187,7 +190,7 @@ function Fiche() {
     } else {
       setWait(true)
       setLoading(true)
-      if (compte === "prof" && purpose === "create") {
+      if (compte === "prof" && purpose === "create") { //validation de la pointage depuis la creation
         try {
           event.preventDefault();
           await postFiche();
@@ -202,7 +205,7 @@ function Fiche() {
             "Erreur lors de la soumission du formulaire : " + error.message
           );
         }
-      } else if (compte === "prof" && purpose === "show") {
+      } else if (compte === "prof" && purpose === "show") { // validation de la pointage si le prof modifie la fiche
         console.log(codehoraire);
         try {
           event.preventDefault();
@@ -239,15 +242,19 @@ function Fiche() {
 
 
         
-      } else {
+      } else { //validation de la pointage si la scolarité modifie les absences justifiées
+
+        //les matricules des absences justifiés
         const matriculesJust = traiterData(data, compte)
           .filter((item) => item.statut === 3)
           .map((item) => item.matricule);
 
+        //matricules des non justifié
         const matriculesNonJust = traiterData(data, compte)
           .filter((item) => item.statut === 2)
           .map((item) => item.matricule);
 
+        //traitement des params à envoyer à l'api (ici des absences justifiés)
         const bodyJust = absent
           .filter((item) => matriculesJust.includes(item.im))
           .map((item) => ({
@@ -255,6 +262,7 @@ function Fiche() {
             motifabs: "ok",
           }));
 
+        //traitement des params à envoyer à l'api (ici des absences non justifiés)
         const bodyNonJust = absent
           .filter((item) => matriculesNonJust.includes(item.im))
           .map((item) => ({
@@ -262,6 +270,7 @@ function Fiche() {
             motifabs: null,
           }));
 
+        //body final à envoyer à l'api
         const body = bodyJust.concat(bodyNonJust);
 
         try {
