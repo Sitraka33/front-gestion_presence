@@ -144,7 +144,7 @@ function TabFicheProf({ data, onUpdateData, purpose, codehoraire, compte, absent
                     className="checkbox__input input-absent"
                     checked={ligne.statut === 2 || ligne.statut === 3}
                     onChange={() => handleAbsentChange(ligne.matricule)}
-                    disabled={compte !== "prof"}
+                    disabled={compte !== "prof" || ligne.statut === 3}
                   />
                   <span className="checkbox__inner absent"></span>
                 </label>
