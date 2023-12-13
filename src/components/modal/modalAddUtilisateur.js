@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../../style/modalAddUtilisateur.css";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 
 function ModalAddUtilisateur({ openModal, closeModal }) {
-  const navigate = useNavigate();
   const [choixEns, setChoixEns] = useState(false);
   const [choixSco, setChoixSco] = useState(false);
   const [enseignant, setEnseignant] = useState([]);
@@ -19,6 +17,7 @@ function ModalAddUtilisateur({ openModal, closeModal }) {
     window.location.reload();
   }
 
+  //Recupération de la liste de tous les enseignants
   async function getAllEnseignant() {
     try {
       const response = await axios.get(
@@ -31,6 +30,7 @@ function ModalAddUtilisateur({ openModal, closeModal }) {
     }
   }
 
+  //Recupération de la liste de tous les employées de la scolarité
   async function getAllScolarite() {
     try {
       const response = await axios.get(
@@ -43,34 +43,43 @@ function ModalAddUtilisateur({ openModal, closeModal }) {
     }
   }
 
+  //Fonction permettant de charger le contenu des champs "select" selon le poste choisi
   function handleSelectPosteChange(event) {
     var selectedOption = event.target.options[event.target.selectedIndex];
     var poste = selectedOption.getAttribute("data-poste");
 
-    //var selectValue = event.target.value;
     if (poste === "Enseignant") {
-      getAllEnseignant();
+      getAllEnseignant(); //recupère les matricules des enseignant
       setChoixEns(true);
       setChoixSco(false);
-      console.log("Enseignant choisi", enseignant);
     } else if (poste === "Scolarite") {
-      getAllScolarite();
+      getAllScolarite(); //recupère les matricules des scolarités
       setChoixSco(true);
       setChoixEns(false);
-      console.log("Scolarité choisi", scolarite);
     }
   }
 
+  const optionsEns = enseignant.map((ens, index) => (
+    <option key={index} value={ens.codeens}>
+      {ens.codeens} {ens.nomens} {ens.prenomsens}
+    </option>
+  ));
+
+  const optionsSco = scolarite.map((sco, index) => (
+    <option key={index} value={sco.codesco}>
+      {sco.codesco} {sco.nomsco} {sco.prenomsco}
+    </option>
+  ));
+
+  //Fonctions récupérant les valeurs des champs du formulaire
   function handleInputChange(e) {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log("miova daoly", formValues);
   }
 
   function handleMatriculeChange(e) {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log("matricule ", formValues);
   }
 
   function handleFormChange(e) {
@@ -94,40 +103,25 @@ function ModalAddUtilisateur({ openModal, closeModal }) {
     console.log("miova daoly", formValues);
   }
 
+  //Fonction qui gère l'ajout d'un utilisateur
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Valeurs saisies :", formValues);
 
     const parametre = {
       ...formValues,
       matricule: formValues.matricule.split(" ")[0],
     };
 
-    console.log("variable parametre : ", parametre);
-
     try {
       const response = await axios.post(
         "https://eni-service-gestionpresence.onrender.com/utilisateur",
         parametre
       );
-      console.log("Réponse de l'API :", response.data);
       redirection();
     } catch (error) {
       console.error("Erreur lors de l'envoi des données à l'API :", error);
     }
   };
-
-  const optionsEns = enseignant.map((ens, index) => (
-    <option key={index} value={ens.codeens}>
-      {ens.codeens} {ens.nomens} {ens.prenomsens}
-    </option>
-  ));
-
-  const optionsSco = scolarite.map((sco, index) => (
-    <option key={index} value={sco.codesco}>
-      {sco.codesco} {sco.nomsco} {sco.prenomsco}
-    </option>
-  ));
 
   return (
     openModal && (
@@ -215,13 +209,6 @@ function ModalAddUtilisateur({ openModal, closeModal }) {
               </div>
             </form>
           </div>
-          {/* <div className="modalAddUser-footer">
-             <div className="btnAdd-wrapper">
-               <button type="submit" className="btnAdd" onClick={handleSubmit}>
-                Ajouter
-              </button> 
-            </div> 
-          </div> */}
         </div>
       </div>
     )

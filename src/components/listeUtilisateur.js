@@ -15,13 +15,11 @@ function ListeUtilisateur() {
   }
   function closeModal() {
     setOpenModal(false);
-    //window.location.reload();
   }
 
+  //Gestion de l'affichage de contenu selon le poste de l'utilisateur
   useEffect(() => {
-    console.log(localStorage.getItem("poste"))
     if (localStorage.getItem("poste") !== "Admin" || !localStorage.getItem("login")) {
-      console.log("ato")
       localStorage.removeItem("poste");
       localStorage.removeItem("matricule");
       localStorage.removeItem("create");

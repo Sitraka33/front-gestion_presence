@@ -5,10 +5,8 @@ import question from "../assets/question.png";
 import "../style/modalEditUtilisateur.css";
 import "../style/modalDeleteUtilisateur.css";
 import rechercheImg from "../assets/search.png";
-import { useNavigate } from "react-router-dom";
 
 function TabUtilisateur() {
-  const navigate = useNavigate();
   const [donnees, setDonnees] = useState([]);
   const [recherche, setRecherche] = useState("");
   const [selectedMatricule, setSelectedMatricule] = useState(null);
@@ -28,6 +26,7 @@ function TabUtilisateur() {
     poste: "",
   });
 
+  //Récupération de la liste de tous les utilisateurs
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -43,10 +42,12 @@ function TabUtilisateur() {
     fetchData();
   }, []);
 
+  //Actualisation de la page
   async function redirection() {
     window.location.reload();
   }
 
+  //Ouverture du modal modification
   const openUpdateModal = (matricule, poste, nom, prenom) => {
     setSelectedMatricule(matricule);
     setSelectedPoste(poste);
@@ -55,15 +56,15 @@ function TabUtilisateur() {
     setIsModalUpdateVisible(true);
   };
 
+  //Ouverture du modal suppression
   const openDeleteModal = (matricule, nom, prenom) => {
-    console.log("ato", matricule);
     setMatriculeDelete(matricule);
     setNomDelete(nom);
     setPrenomDelete(prenom);
-    console.log("ato", matriculeDelete, nomDelete, prenomDelete);
     setIsModalDeleteVisible(true);
   };
 
+  //Fermeture des modals
   const closeDeleteModal = () => {
     setMatriculeDelete(null);
     setIsModalDeleteVisible(false);
@@ -72,58 +73,56 @@ function TabUtilisateur() {
   const closeUpdateModal = () => {
     setSelectedMatricule(null);
     setIsModalUpdateVisible(false);
-    //window.location.reload();
   };
 
+  //Recupération du mot de passe saisie
   function handleGetMdp(e) {
     const { name, value } = e.target;
     setData({ ...data, motdepasse: value });
-    console.log("mot de passe saisi:", data.motdepasse);
   }
 
+  //
   function handleFormChange(e) {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-
-    console.log("miova daoly", data.motdepasse);
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const parametre = {
-      matricule: selectedMatricule,
-      motdepasse: data.motdepasse,
-    };
-    console.log("variable parametre : ", parametre);
-    try {
-      const response = await axios.put(
-        "https://eni-service-gestionpresence.onrender.com/utilisateur",
-        parametre
-      );
-      console.log("Réponse de l'API :", response.data);
-      redirection();
-    } catch (error) {
-      console.error("Erreur lors de l'envoi des données à l'API :", error);
-    }
-  };
-
+  //Fonction qui gère la suppression d'un utilisateur
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    console.log("variable parametre : ", matriculeDelete);
     try {
       const response = await axios.delete(
         "https://eni-service-gestionpresence.onrender.com/utilisateur/" +
           matriculeDelete
       );
-      console.log("Réponse de l'API :", response.data);
       await redirection();
     } catch (error) {
       console.error("Erreur lors de l'envoi des données à l'API :", error);
     }
   };
 
+  //Fonction qui gère la modification d'un utilisateur à partir du modal
+  const handleSubmitUpdate = async (e) => {
+    e.preventDefault();
+
+    const parametre = {
+      matricule: selectedMatricule,
+      motdepasse: data.motdepasse,
+    };
+
+    try {
+      const response = await axios.put(
+        "https://eni-service-gestionpresence.onrender.com/utilisateur",
+        parametre
+      );
+      redirection();
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données à l'API :", error);
+    }
+  };
+
+  //Gestion de la recherche
   const resultatFiltres = donnees.filter((ligne) => {
     const rechercheLowerCase = recherche.toLowerCase();
     return (
@@ -146,6 +145,7 @@ function TabUtilisateur() {
           className="btn-update"
           onClick={() =>
             openUpdateModal(
+              //recupère les informations concernant l'utilisateur selectionné
               utilisateur.matricule,
               utilisateur.poste,
               utilisateur.nom,
@@ -159,6 +159,7 @@ function TabUtilisateur() {
           className="btn-delete"
           onClick={() =>
             openDeleteModal(
+              //recupère les informations concernant l'utilisateur selectionné
               utilisateur.matricule,
               utilisateur.nom,
               utilisateur.prenoms
@@ -183,14 +184,14 @@ function TabUtilisateur() {
           </div>
           <div className="imageRecherche-container">
             <div className="imgRecherche-wrapper">
-              <img src={rechercheImg} className="img-add" alt></img>
+              <img src={rechercheImg} className="img-add" ></img>
             </div>
           </div>
         </div>
       </div>
       <table>
         <thead>
-        <tr>
+          <tr>
             <th>Matricule</th>
             <th>Nom</th>
             <th>Poste</th>
@@ -214,7 +215,7 @@ function TabUtilisateur() {
               </div>
             </div>
             <div className="modalEditUser-body">
-              <form onChange={handleFormChange} onSubmit={handleSubmit}>
+              <form onChange={handleFormChange} onSubmit={handleSubmitUpdate}>
                 <label>Matricule</label>
                 <input
                   type="text"

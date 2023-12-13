@@ -14,5 +14,4 @@ function ModalProgressBar({ openModal, children, closeModal,downloadComplete }) 
     )
   );
 }
-
 export default ModalProgressBar;
