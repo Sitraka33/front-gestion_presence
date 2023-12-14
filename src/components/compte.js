@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Layout from "./layout";
 import Axios from "axios";
 import "../style/compte.css";
+import teacher from "../assets/teacher.png";
+import scolarite from "../assets/scolarite.png";
 import { useNavigate } from "react-router-dom";
 
 function Compte() {
@@ -87,27 +89,40 @@ function Compte() {
       <div className="section-compte">
         <div className="card-container-compte">
           <div className="card-compte card-header-compte">
-            <div className="information">
-              <h1>Information du compte :</h1>
-              {compte === "Admin" ? (
-                <h2 className="center">Administrateur</h2>
-              ) : (
-                <div className="text-info">
-                  <div>
-                    <span className="label-compte">Utilisateur :</span>
-                    <span className="label-compte">Matricule :</span>
-                  </div>
-                  <div>
-                    <span className="text-compte">{nomCompte}</span>
-                    <span className="text-compte">{matricule}</span>
-                  </div>
+            <div className="information-container">
+              <p>Informations personnelles :</p>
+              <div className="information">
+                <div className="avatar-container">
+                  {compte === "sco" ? (
+                    <img src={scolarite} className="avatar-img"></img>
+                  ) : (
+                    <img src={teacher} className="avatar-img"></img>
+                  )}
                 </div>
-              )}
+                <div className="information-wrapper">
+                  {compte === "Admin" ? (
+                    <h2 className="center">Administrateur</h2>
+                  ) : (
+                    <div className="text-info">
+                      <div>
+                        <span className="label-compte">Matricule :</span>
+                        <span className="label-compte">
+                          Nom d'utilisateur :
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-compte">{matricule}</span>
+                        <span className="text-compte">{nomCompte}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div className="card-compte card-mdp">
-            <div>
-              <h1>Modifier mot de passe :</h1>
+            <div className="card-compte-container">
+              <p className="card-compte-container-title">Modifier votre mot de passe :</p>
               <form className="change-mdp" onSubmit={handleSubmit}>
                 <span>
                   <label>Votre mot de passe actuelle :</label>
@@ -138,7 +153,7 @@ function Compte() {
                 </span>
                 <span className="error">{error}</span>
                 <span>
-                  <button>Confirmer</button>
+                  <button>Enregistrer</button>
                 </span>
               </form>
             </div>
